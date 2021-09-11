@@ -1,9 +1,11 @@
 import string
+import numpy as np
+
 def main():
     go_row = 19
     go_col = 19
-    board = [[0]*go_col]*go_row
-    player_input()
+    board = np.zeros((go_row, go_col), int)
+    board = player_input(board)
     print_board(board)   
 
 def print_board(board): 
@@ -31,11 +33,12 @@ def print_board(board):
         print("----", end = "")
     print("-----")
 
-def player_input():
-    row_move, col_move = input("Enter move, row_move col_move: ").split()
-    print("row move: ", row_move)
-    print("col move: ", col_move)
-
+def player_input(board):
+    row_move, col_move = map(int,input("Enter move, row_move col_move: ").split())
+    print(row_move)
+    print(col_move)
+    board[row_move-1][col_move-1] = 1
+    return board
 
 if __name__ == "__main__":
     main()
