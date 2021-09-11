@@ -1,7 +1,9 @@
+import string
 def main():
     go_row = 19
     go_col = 19
     board = [[0]*go_col]*go_row
+    player_input()
     print_board(board)   
 
 def print_board(board): 
@@ -28,6 +30,11 @@ def print_board(board):
     for y_loc in range(len(board[0])):
         print("----", end = "")
     print("-----")
+
+def player_input():
+    row_move, col_move = input("Enter move, row_move col_move: ").split()
+    print("row move: ", row_move)
+    print("col move: ", col_move)
 
 
 if __name__ == "__main__":
