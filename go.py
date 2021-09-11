@@ -19,7 +19,7 @@ def print_board(board):
     print("\n")
     for y_loc in range(len(board[0])):
         print("----", end = "")
-    print("-----\n")
+    print("-------\n")
     for row in range(len(board)):
         if (row+1<10):
             print(row+1, " |  ", end = "")
@@ -31,13 +31,34 @@ def print_board(board):
         print("\n")
     for y_loc in range(len(board[0])):
         print("----", end = "")
-    print("-----")
+    print("-------")
 
 def player_input(board):
-    row_move, col_move = map(int,input("Enter move, row_move col_move: ").split())
-    print(row_move)
-    print(col_move)
-    board[row_move-1][col_move-1] = 1
+    action = 1
+    while True:
+        try:
+            row_move = int(input("Enter Row Move (-1 to stop): "))
+            while (row_move<0 or row_move>19):
+                row_move = int(input("Enter Row Move (-1 to stop): "))
+                if (row_move == -1):
+                    print("Users have stopped the match")
+                    action = 0
+                    break;
+
+            col_move = int(input("Enter Column Move: (-1 to stop)"))
+            while (col_move<0 or col_move>19):
+                col_move = int(input("Enter Column Move (-1 to stop): "))
+                if (col_move == -1):
+                    print("Users have stopped the match")
+                    action = 0
+                    break;
+
+            break
+        except ValueError:
+            print("Still working")
+    if (action == 1):
+        board[row_move-1][col_move-1] = 1
+        print("hi")
     return board
 
 if __name__ == "__main__":
