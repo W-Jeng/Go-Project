@@ -34,39 +34,47 @@ def print_board(board):
     print("-------")
 
 def player_input(board):
+    #player 1 is black and player 2 is white
     action = 1
     player = 1;
-    while True:
-        try:
-            row_move = int(input("Enter Row Move (-1 to stop): "))
-            while (not valid_move(row_move)):
-                if (row_move == -1):
-                    print("User has topped the match")
-                    action = 0
-                    break;
-                else:
-                    row_move = int(input("Enter Row Move (-1 to stop): "))
-            if (action == 0):
+    while (action == 1):
+        while True:
+            try:
+                print("-------------------------------------")
+                row_move = int(input("Enter Row Move (-1 to forfeit): "))
+                while (not valid_move(row_move)):
+                    if (row_move == -1):
+                        print("Player", player, "has forfeited the match")
+                        action = 0
+                        break;
+                    else:
+                        row_move = int(input("Enter Row Move (-1 to stop): "))
+                if (action == 0):
+                    break
+                col_move = int(input("Enter Column Move: (-1 to stop): "))
+                while (not valid_move(col_move)):
+                    if (col_move == -1):
+                        print("Player", player, "has forfeited the match")
+                        action = 0
+                        break;
+                    else:
+                        col_move = int(input("Enter Column Move: (-1 to stop): "))
                 break
-            col_move = int(input("Enter Column Move: (-1 to stop): "))
-            while (not valid_move(col_move)):
-                if (col_move == -1):
-                    print("User has stopped the match")
-                    action = 0
-                    break;
-                else:
-                    col_move = int(input("Enter Column Move: (-1 to stop): "))
-            break
-        except ValueError:
-            print("Invalid Move, not integer number has been entered")
-    if (action == 1):
-        print("The player inserted on [", row_move, ",", col_move, "]")
-        board[row_move-1][col_move-1] = 1
+            except ValueError:
+                print("Invalid Move, not integer number has been entered")
+        if (action == 1):
+            print("The player", player, "inserted on [", row_move, ",", col_move, "]")
+            board[row_move-1][col_move-1] = player
+            if (player == 1):
+                player = 2
+            else:
+                player = 1
     return board
 
 def valid_move(move):
     if (move<1 or move>19):
-        print("Invalid Move")
+        if (move != -1):
+            print("Invalid Move")
         return False
     else:
         return True
