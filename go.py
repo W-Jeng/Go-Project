@@ -35,31 +35,43 @@ def print_board(board):
 
 def player_input(board):
     action = 1
+    player = 1;
     while True:
         try:
             row_move = int(input("Enter Row Move (-1 to stop): "))
-            while (row_move<0 or row_move>19):
-                row_move = int(input("Enter Row Move (-1 to stop): "))
+            while (not valid_move(row_move)):
                 if (row_move == -1):
-                    print("Users have stopped the match")
+                    print("User has topped the match")
                     action = 0
                     break;
-
-            col_move = int(input("Enter Column Move: (-1 to stop)"))
-            while (col_move<0 or col_move>19):
-                col_move = int(input("Enter Column Move (-1 to stop): "))
+                else:
+                    row_move = int(input("Enter Row Move (-1 to stop): "))
+            if (action == 0):
+                break
+            col_move = int(input("Enter Column Move: (-1 to stop): "))
+            while (not valid_move(col_move)):
                 if (col_move == -1):
-                    print("Users have stopped the match")
+                    print("User has stopped the match")
                     action = 0
                     break;
-
+                else:
+                    col_move = int(input("Enter Column Move: (-1 to stop): "))
             break
         except ValueError:
-            print("Still working")
+            print("Invalid Move, not integer number has been entered")
     if (action == 1):
+        print("The player inserted on [", row_move, ",", col_move, "]")
         board[row_move-1][col_move-1] = 1
-        print("hi")
     return board
+
+def valid_move(move):
+    if (move<1 or move>19):
+        print("Invalid Move")
+        return False
+    else:
+        return True
+
+
 
 if __name__ == "__main__":
     main()
