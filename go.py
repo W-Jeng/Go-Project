@@ -35,12 +35,13 @@ def print_board(board):
 
 def player_input(board):
     #player 1 is black and player 2 is white
-    action = 1
+    action = 1 #action determines whether the player's move is valid, and then added to the board
     player = 1;
     while (action == 1):
         while True:
             try:
                 print("-------------------------------------")
+                print("Player "+str(player)+ "'s turn:")
                 row_move = int(input("Enter Row Move (-1 to forfeit): "))
                 while (not valid_move(row_move)):
                     if (row_move == -1):
@@ -59,7 +60,9 @@ def player_input(board):
                         break;
                     else:
                         col_move = int(input("Enter Column Move: (-1 to stop): "))
-                break
+                if (rules_move(board, row_move, col_move)):
+                    break;
+
             except ValueError:
                 print("Invalid Move, not integer number has been entered")
         if (action == 1):
@@ -72,6 +75,7 @@ def player_input(board):
     return board
 
 def valid_move(move):
+    #this checks if the player's movement is within normal bound
     if (move<1 or move>19):
         if (move != -1):
             print("Invalid Move")
@@ -79,7 +83,38 @@ def valid_move(move):
     else:
         return True
 
+def rules_move(board, row_move, col_move):
+    #this checks that the step is within rules
+    if (board[row_move-1][col_move-1] != 0):
+        print("The position has been previously occupied")
+        return False
+        
 
+    return True
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
