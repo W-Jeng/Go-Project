@@ -8,28 +8,28 @@ def main():
     board = player_input(board)
     print_board(board)   
 
-def print_board(board): 
+def print_board(p_board): 
     print("\n")
     print("      ", end = "")
-    for c1 in range (len(board[0])):
+    for c1 in range (len(p_board[0])):
         if (c1+1<10):
             print(c1+1, "  ", end= "")
         else:
             print(c1+1, " ", end ="")
     print("\n")
-    for y_loc in range(len(board[0])):
+    for y_loc in range(len(p_board[0])):
         print("----", end = "")
     print("-------\n")
-    for row in range(len(board)):
+    for row in range(len(p_board)):
         if (row+1<10):
             print(row+1, " |  ", end = "")
         else:
             print(row+1, "|  ", end = "")
-        for col in range(len(board[0])):
-            print(board[row][col], "  ", end='')
+        for col in range(len(p_board[0])):
+            print(p_board[row][col], "  ", end='')
         print("|", end ='')
         print("\n")
-    for y_loc in range(len(board[0])):
+    for y_loc in range(len(p_board[0])):
         print("----", end = "")
     print("-------")
 
@@ -63,19 +63,14 @@ def player_input(board):
                         break;
                     else:
                         col_move = int(input("Enter Column Move: (-1 to stop): "))
-                if (rules_move(board, row_move, col_move, board_prev2, player, turn)):
+                if (rules_move(board, row_move, col_move, board_prev1, player, turn)):
                     break;
 
             except ValueError:
                 print("Invalid Move, not integer number has been entered")
         if (action == 1):
             print("The player", player, "inserted on [", row_move, ",", col_move, "]")
-            if (turn>1):
-                board_prev2 = board_prev1
-                print("turn" + str(turn)) 
-                print_board(board_prev2)
-            board_prev1 = board
-
+            board_prev1 = np.array(board)
             board[row_move-1][col_move-1] = player
             turn+=1
             if (player == 1):
@@ -93,28 +88,29 @@ def valid_move(move):
     else:
         return True
 
-def rules_move(board, row_move, col_move, board_prev2, player, turn):
+def rules_move(board_m, row_move, col_move, board_prev1, player, turn):
     #this checks that the step is within rules
-    if (board[row_move-1][col_move-1] != 0):
+    if (board_m[row_move-1][col_move-1] != 0):
         print("The position has been previously occupied")
         return False
     #prevents repeating moves (ko rule)
     #print_board(board_prev2)
-    cur_state = board[row_move-1][col_move-1]
-    board[row_move-1][col_move-1] = player
-    if (turn > 2 and equal_matrices(board, board_prev2)):
+    cur_state = board_m[row_move-1][col_move-1]
+    board_m[row_move-1][col_move-1] = player
+    if (turn == 3 and equal_matrices(board_m, board_prev1)):
         #print_board(board)
+        print("turn" + str(turn)) 
         print("The position is repetitive")
-        board[row_move-1][col_move-1] = cur_state
+        board_m[row_move-1][col_move-1] = cur_state
         return False
-    board[row_move-1][col_move-1] = cur_state
+    board_m[row_move-1][col_move-1] = cur_state
 
     return True
 
 def equal_matrices(board1, board2):
     for i in range(len(board1)):
         for j in range(len(board1[0])):
-            if board1[i][j] != board2[i][j]:
+            if (board1[i][j] != board2[i][j]):
                 return False
     return True
 
