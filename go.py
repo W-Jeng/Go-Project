@@ -36,12 +36,15 @@ def print_board(board):
 def player_input(board):
     #player 1 is black and player 2 is white
     action = 1 #action determines whether the player's move is valid, and then added to the board
-    player = 1;
+    player = 1
+    turn = 1
+    board_prev1 = np.zeros((19,19), int)
+    board_prev2 = np.zeros((19,19), int)
     while (action == 1):
         while True:
             try:
                 print("-------------------------------------")
-                print("Player "+str(player)+ "'s turn:")
+                print("Turn " + str(turn)+ ", Player "+str(player)+ "'s turn:")
                 row_move = int(input("Enter Row Move (-1 to forfeit): "))
                 while (not valid_move(row_move)):
                     if (row_move == -1):
@@ -60,14 +63,21 @@ def player_input(board):
                         break;
                     else:
                         col_move = int(input("Enter Column Move: (-1 to stop): "))
-                if (rules_move(board, row_move, col_move)):
+                if (rules_move(board, row_move, col_move, board_prev2, player, turn)):
                     break;
 
             except ValueError:
                 print("Invalid Move, not integer number has been entered")
         if (action == 1):
             print("The player", player, "inserted on [", row_move, ",", col_move, "]")
+            if (turn>1):
+                board_prev2 = board_prev1
+                print("turn" + str(turn)) 
+                print_board(board_prev2)
+            board_prev1 = board
+
             board[row_move-1][col_move-1] = player
+            turn+=1
             if (player == 1):
                 player = 2
             else:
@@ -83,36 +93,34 @@ def valid_move(move):
     else:
         return True
 
-def rules_move(board, row_move, col_move):
+def rules_move(board, row_move, col_move, board_prev2, player, turn):
     #this checks that the step is within rules
     if (board[row_move-1][col_move-1] != 0):
         print("The position has been previously occupied")
         return False
-        
+    #prevents repeating moves (ko rule)
+    #print_board(board_prev2)
+    cur_state = board[row_move-1][col_move-1]
+    board[row_move-1][col_move-1] = player
+    if (turn > 2 and equal_matrices(board, board_prev2)):
+        #print_board(board)
+        print("The position is repetitive")
+        board[row_move-1][col_move-1] = cur_state
+        return False
+    board[row_move-1][col_move-1] = cur_state
 
     return True
 
+def equal_matrices(board1, board2):
+    for i in range(len(board1)):
+        for j in range(len(board1[0])):
+            if board1[i][j] != board2[i][j]:
+                return False
+    return True
+
+
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
