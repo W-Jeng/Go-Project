@@ -114,8 +114,8 @@ def equal_matrices(board1, board2):
                 return False
     return True
 
-def flashfood(board):
-    #the flashfood algorithm is capable of detecting that if a capture has happened or not
+def flashflood(board):
+    #the flashflood algorithm is capable of detecting that if a capture has happened or not
 
 
 if __name__ == "__main__":
